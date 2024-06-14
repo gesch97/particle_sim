@@ -1,6 +1,7 @@
 IDIR =include
 CC=gcc
-CFLAGS=-I$(IDIR) $(shell pkg-config --libs --cflags raylib)
+CFLAGS_C=-I$(IDIR) $(shell pkg-config --cflags raylib)
+CFLAGS_L=-I$(IDIR) $(shell pkg-config --libs --cflags raylib)
 EXE_NAME =prog
 
 SRCDIR=src
@@ -8,23 +9,24 @@ SRCDIR=src
 ODIR=bin
 LDIR =lib
 
-# LIBS=$(shell pkg-config --libs --cflags raylib)
-# asd:
-# 	echo $(CFLAGS)
 
+_FRAMEWORKS = CoreVideo IOKit Cocoa GLUT OpenGL
+FRAMEWORKS = $(patsubst %,-framework %,$(_FRAMEWORKS))
 
-_DEPS = hello.h
+_DEPS =
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = hello.o main.o 
+_OBJ = main.o 
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
+run: prog
+	./prog
 
 $(ODIR)/%.o: $(SRCDIR)/%.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
+	$(CC) -c -o $@ $< $(CFLAGS_C)
 
 $(EXE_NAME): $(OBJ)
-	$(CC) -o $@ $^ $(CFLAGS) -framework CoreVideo -framework IOKit -framework Cocoa -framework GLUT -framework OpenGL $(LIBS)
+	$(CC) -o $@ $^ $(CFLAGS_L) $(LIBS) $(FRAMEWORKS)
 
 .PHONY: clean
 

@@ -1,3 +1,6 @@
+# executable
+prog
+
 # clangd
 .cache/
 *.json
