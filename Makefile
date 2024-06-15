@@ -16,7 +16,7 @@ FRAMEWORKS = $(patsubst %,-framework %,$(_FRAMEWORKS))
 _DEPS =
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o 
+_OBJ = main.o particle_physics.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 run: prog
