@@ -1,3 +1,5 @@
+#pragma once
+
 typedef struct {
   int r;
   float x;
@@ -12,3 +14,5 @@ typedef struct {
 void updateParticleState(particle *pt_ptr, float t);
 void printParticle(particle const *p);
 void calculateGAcc(particle *p1, particle *p2);
+void setAccToZero(particle *p);
+

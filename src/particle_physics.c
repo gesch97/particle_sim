@@ -21,9 +21,15 @@ void calculateGAcc(particle *p1, particle *p2) {
   const double r2 = dx * dx + dy * dy;
   const double r = sqrt(r2);
 
-  p1->xa = -p2->m * dx / r2 / r;
-  p1->ya = -p2->m * dy / r2 / r;
+  p1->xa += -p2->m * dx / r2 / r;
+  p1->ya += -p2->m * dy / r2 / r;
 
-  p2->xa = p1->m * dx / r2 / r;
-  p2->ya = p1->m * dy / r2 / r;
+  p2->xa += p1->m * dx / r2 / r;
+  p2->ya += p1->m * dy / r2 / r;
+}
+
+
+void setAccToZero(particle *p){
+  p->xa = 0;
+  p->ya = 0;
 }
