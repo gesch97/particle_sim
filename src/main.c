@@ -65,6 +65,8 @@ int main(int argc, char *argv[]) {
 
     BeginDrawing();
 
+    DrawFPS(GetScreenWidth() - 100, GetScreenHeight() - 50);
+
     ClearBackground(RAYWHITE);
     drawParticle(&pts[0]);
     drawParticle(&pts[1]);
