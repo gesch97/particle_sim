@@ -2,11 +2,14 @@
 #include <particle_physics.h>
 #include <stdio.h>
 
-void updateParticleState(particle *pt_ptr, float t) {
-  pt_ptr->x += pt_ptr->xv * t + 0.5f * pt_ptr->xa * t * t;
-  pt_ptr->y += pt_ptr->yv * t + 0.5f * pt_ptr->ya * t * t;
-  pt_ptr->xv += pt_ptr->xa * t;
-  pt_ptr->yv += pt_ptr->ya * t;
+void updateParticlesState(particle p[], size_t p_s, float t) {
+
+  for (size_t i = 0; i < p_s; i++) {
+    p[i].x += p[i].xv * t + 0.5f * p[i].xa * t * t;
+    p[i].y += p[i].yv * t + 0.5f * p[i].ya * t * t;
+    p[i].xv += p[i].xa * t;
+    p[i].yv += p[i].ya * t;
+  }
 }
 
 void printParticle(particle const *p) {
@@ -15,21 +18,26 @@ void printParticle(particle const *p) {
   printf("(xa,ya) = (%f,%f)\n", p->xa, p->ya);
 }
 
-void calculateGAcc(particle *p1, particle *p2) {
-  const float dx = p1->x - p2->x;
-  const float dy = p1->y - p2->y;
-  const double r2 = dx * dx + dy * dy;
-  const double r = sqrt(r2);
+void calculateGAcc(particle p[], size_t p_s) {
+  for (size_t i = 0; i < p_s; i++) {
+    for (size_t j = i + 1; j < p_s; j++) {
+      const float dx = p[i].x - p[j].x;
+      const float dy = p[i].y - p[j].y;
+      const double r2 = dx * dx + dy * dy;
+      const double r = sqrt(r2);
 
-  p1->xa += -p2->m * dx / r2 / r;
-  p1->ya += -p2->m * dy / r2 / r;
+      p[i].xa += -p[j].m * dx / r2 / r;
+      p[i].ya += -p[j].m * dy / r2 / r;
 
-  p2->xa += p1->m * dx / r2 / r;
-  p2->ya += p1->m * dy / r2 / r;
+      p[j].xa += p[i].m * dx / r2 / r;
+      p[j].ya += p[i].m * dy / r2 / r;
+    }
+  }
 }
 
-
-void setAccToZero(particle *p){
-  p->xa = 0;
-  p->ya = 0;
+void setAccToZero(particle p[], size_t p_s) {
+  for (size_t i = 0; i < p_s; i++) {
+    p[i].xa = 0;
+    p[i].ya = 0;
+  }
 }

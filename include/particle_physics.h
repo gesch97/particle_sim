@@ -1,4 +1,5 @@
 #pragma once
+#include <stdio.h>
 
 typedef struct {
   int r;
@@ -11,8 +12,8 @@ typedef struct {
   float m;
 } particle;
 
-void updateParticleState(particle *pt_ptr, float t);
+void updateParticlesState(particle p[], size_t p_s, float t);
 void printParticle(particle const *p);
-void calculateGAcc(particle *p1, particle *p2);
-void setAccToZero(particle *p);
+void calculateGAcc(particle p[], size_t p_s);
+void setAccToZero(particle p[], size_t p_s);
 

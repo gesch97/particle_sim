@@ -1,13 +1,15 @@
 #include "raylib.h"
 #include <complex.h>
 #include <particle_physics.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-void drawParticle(const particle *restrict pt_ptr) {
-  DrawCircle(pt_ptr->x, pt_ptr->y, pt_ptr->r, BLACK);
+void drawParticles(particle p[], size_t p_s) {
+  for (size_t i = 0; i < p_s; i++) {
+    DrawCircle(p[i].x, p[i].y, p[i].r, BLACK);
+  }
 }
+
 #define NO_OF_PTS 3
 int main(int argc, char *argv[]) {
   InitWindow(1200, 900, "Particle Simulator");
@@ -43,6 +45,7 @@ int main(int argc, char *argv[]) {
       .ya = 0,
       .m = 100000,
   };
+
   clock_t last_time = clock();
   double elapsed_time;
   while (!WindowShouldClose()) // Detect window close button or ESC key
@@ -50,17 +53,10 @@ int main(int argc, char *argv[]) {
     elapsed_time = ((double)(clock() - last_time)) * 0.00001;
     last_time = clock();
 
-    setAccToZero(&pts[0]);
-    setAccToZero(&pts[1]);
-    setAccToZero(&pts[2]);
-    for (size_t i = 0; i < NO_OF_PTS; i++) {
-      for (size_t j = i + 1; j < NO_OF_PTS; j++) {
-        calculateGAcc(&pts[i], &pts[j]);
-      }
-    }
-    updateParticleState(&pts[0], elapsed_time);
-    updateParticleState(&pts[1], elapsed_time);
-    updateParticleState(&pts[2], elapsed_time);
+    setAccToZero(pts, NO_OF_PTS);
+    calculateGAcc(pts, NO_OF_PTS);
+
+    updateParticlesState(pts, NO_OF_PTS, elapsed_time);
     printParticle(&pts[0]);
 
     BeginDrawing();
@@ -68,9 +64,7 @@ int main(int argc, char *argv[]) {
     DrawFPS(GetScreenWidth() - 100, GetScreenHeight() - 50);
 
     ClearBackground(RAYWHITE);
-    drawParticle(&pts[0]);
-    drawParticle(&pts[1]);
-    drawParticle(&pts[2]);
+    drawParticles(pts, NO_OF_PTS);
 
     EndDrawing();
   }
