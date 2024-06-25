@@ -16,14 +16,15 @@ FRAMEWORKS = $(patsubst %,-framework %,$(_FRAMEWORKS))
 _DEPS =
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
 
-_OBJ = main.o particle_physics.o
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
+SRC_FILES = $(wildcard $(SRCDIR)/*.c)
+OBJ := $(patsubst $(SRCDIR)/%.c, $(ODIR)/%.o, $(SRC_FILES))
 
-run: prog
+run: $(EXE_NAME)
 	./prog
 
 $(ODIR)/%.o: $(SRCDIR)/%.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS_C)
+
 
 $(EXE_NAME): $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS_L) $(LIBS) $(FRAMEWORKS)
