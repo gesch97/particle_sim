@@ -3,12 +3,7 @@
 #include <particle_physics.h>
 #include <stdlib.h>
 #include <time.h>
-
-void drawParticles(particle p[], size_t p_s) {
-  for (size_t i = 0; i < p_s; i++) {
-    DrawCircle(p[i].x, p[i].y, p[i].r, BLACK);
-  }
-}
+#include "drawing.h"
 
 #define NO_OF_PTS 3
 int main(int argc, char *argv[]) {
@@ -48,8 +43,19 @@ int main(int argc, char *argv[]) {
 
   clock_t last_time = clock();
   double elapsed_time;
+#if true //DEBUG
+    int height = 0;
+    #endif
   while (!WindowShouldClose()) // Detect window close button or ESC key
   {
+    #if true
+    BeginDrawing();
+    ClearBackground(RAYWHITE);
+    drawArrowAlongAxis(20, 20,height, Y);
+    height++;
+    DrawFPS(GetScreenWidth() - 100, GetScreenHeight() - 50);
+    EndDrawing();
+    #else
     elapsed_time = ((double)(clock() - last_time)) * 0.00001;
     last_time = clock();
 
@@ -67,6 +73,7 @@ int main(int argc, char *argv[]) {
     drawParticles(pts, NO_OF_PTS);
 
     EndDrawing();
+    #endif
   }
 
   CloseWindow();
